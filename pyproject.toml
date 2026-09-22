@@ -1,0 +1,36 @@
+[project]
+name = "maskdecide"
+version = "0.1.0"
+description = "Local typed decisions with Fast-dLLM and an experimental Jev API adapter"
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md"]
+requires-python = ">=3.13"
+dependencies = [
+    "accelerate>=1.15.0",
+    "bitsandbytes>=0.50.2",
+    "einops>=0.8.2",
+    "fastapi>=0.141.1",
+    "torch>=2.14.0",
+    "transformers==4.53.2",
+    "uvicorn[standard]>=0.53.0",
+]
+
+[project.scripts]
+maskdecide = "maskdecide:main"
+
+[build-system]
+requires = ["uv_build>=0.12.17,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+source-include = [
+    "Makefile",
+    "uv.lock",
+    ".python-version",
+    "decision_api_jev.py",
+    "test_jev_api_smoke.py",
+    "tests/**",
+    "scripts/**",
+    "docs/**",
+]
