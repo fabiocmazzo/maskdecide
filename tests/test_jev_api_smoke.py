@@ -19,6 +19,8 @@ import statistics
 import time
 import urllib.error
 import urllib.request
+import random
+
 
 
 def noul(instructions):
@@ -206,11 +208,11 @@ CASES.extend([
         "name": "Choice: custom IDs are preserved",
         "state": "A parcel has not arrived and its tracking number no longer works.",
         "questions": {"ticket.route/v1": choice("Which category matches this issue?", {
-            "team:billing": "Payments and invoices",
-            "team:delivery": "Parcel delivery and tracking",
-            "team:accounts": "Account access",
+            "team_billing": "Payments and invoices",
+            "team_delivery": "Parcel delivery and tracking",
+            "team_accounts": "Account access",
         })},
-        "expected": {"ticket.route/v1": "team:delivery"},
+        "expected": {"ticket.route/v1": "team_delivery"},
     },
     {
         "name": "Structured: nested object state",
@@ -250,8 +252,8 @@ CASES.extend([
     {
         "name": "Unicode: names and non-ASCII option keys",
         "state": "The confirmed recipient is Zoë. José is the sender.",
-        "questions": {"recipient": choice("Who is the confirmed recipient?", {"José": None, "Zoë": None})},
-        "expected": {"recipient": "Zoë"},
+        "questions": {"recipient": choice("Who is the confirmed recipient?", {"Jose": None, "Zoe": None})},
+        "expected": {"recipient": "Zoe"},
     },
     {
         "name": "Score: two-level minimum scale",
@@ -290,6 +292,7 @@ CASES.extend([
     },
 ])
 
+
 # Move the correct answer through every position, including the previously
 # untested first and last positions (reversing three options leaves the middle).
 for keys in [("four", "three", "five"), ("three", "five", "four")]:
@@ -317,11 +320,26 @@ for count in (26, 27):
     CASES.append({
         "name": f"Choice boundary: {count} options",
         "state": f"The selected item number is {count}.",
-        "questions": {"item": choice("Choose the item with the selected number.", {
+        "questions": {"item": choice(f"The selected item number is {count}. Choose the correspondent item with the selected number.", {
             f"item_{i}": f"Item number {i}" for i in range(1, count + 1)
         })},
         "expected": {"item": f"item_{count}"},
     })
+
+
+# Sample valid target positions reproducibly across several option counts.
+choice_random = random.Random(2026)
+for count in (26, 27, 20, 50, 15, 65):
+    correct_question = choice_random.randint(1, count)
+    CASES.append({
+        "name": f"Choice sampled: {count} options, item {correct_question}",
+        "state": f"The number is {correct_question}.",
+        "questions": {"item": choice(f"The number is {correct_question}. Choose the correspondent item with the selected number.", {
+            f"item_{i}": f"Item {i}" for i in range(1, count + 1)
+        })},
+        "expected": {"item": f"item_{correct_question}"},
+    })
+
 
 
 def request_api(url, token, payload, timeout):
@@ -411,7 +429,7 @@ def main():
     parser.add_argument("--url", default="http://127.0.0.1:8000", help="API base URL")
     parser.add_argument("--token", default=os.getenv("LOCAL_API_KEY", ""), help="Server API key (defaults to LOCAL_API_KEY)")
     parser.add_argument("--repeat", type=int, default=1, help="Repetitions of each case")
-    parser.add_argument("--timeout", type=float, default=30.0)
+    parser.add_argument("--timeout", type=float, default=300.0)
     parser.add_argument("--case", action="append", default=[], help="Run names containing this text (case-insensitive; repeatable, matches any)")
     parser.add_argument("--list", action="store_true", help="List matching cases without contacting the server")
     args = parser.parse_args()

@@ -1,0 +1,9 @@
+Sep 26 06:25:24 cachyos-x8664 kernel: usb usb1: root hub lost power or was reset
+Sep 26 06:25:24 cachyos-x8664 kernel: usb usb2: root hub lost power or was reset
+Sep 26 06:25:24 cachyos-x8664 kernel: pcieport 10000:e0:06.2: can't derive routing for PCI INT A
+Sep 26 06:25:24 cachyos-x8664 kernel: nvme 10000:e1:00.0: PCI INT A: no GSI
+Sep 26 06:25:24 cachyos-x8664 kernel: pcieport 10000:e0:1d.0: can't derive routing for PCI INT A
+Sep 26 06:25:24 cachyos-x8664 kernel: nvme 10000:e2:00.0: PCI INT A: no GSI
+Sep 26 06:25:24 cachyos-x8664 kernel: nvme nvme0: 16/0/0 default/read/poll queues
+Sep 26 06:25:24 cachyos-x8664 kernel: nvme nvme1: 16/0/0 default/read/poll queues
+Sep 26 06:25:24 cachyos-x8664 kernel: usb 3-6: reset high-speed USB device number 2 using xhci_hcd

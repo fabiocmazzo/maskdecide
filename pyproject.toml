@@ -12,7 +12,7 @@ dependencies = [
     "einops>=0.8.2",
     "fastapi>=0.141.1",
     "torch>=2.14.0",
-    "transformers==4.53.2",
+    "transformers==5.1.0",
     "uvicorn[standard]>=0.53.0",
 ]
 

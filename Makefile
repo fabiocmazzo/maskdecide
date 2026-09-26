@@ -25,4 +25,4 @@ test:
 	$(UV) run --locked python -m unittest discover -s tests -v
 
 test-smoke:
-	$(UV) run --locked python test_jev_api_smoke.py --url "http://127.0.0.1:$(PORT)" $(TEST_ARGS)
+	$(UV) run --locked python tests/test_jev_api_smoke.py --url "http://127.0.0.1:$(PORT)" $(TEST_ARGS)
